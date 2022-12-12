@@ -14,6 +14,7 @@ public:
 		numerator_ = numerator;
 		denominator_ = denominator;
 	}
+	
 	bool operator==(const Fraction& f) {
 		int n1 = numerator_, d1 = denominator_, n2 = f.numerator_, d2 = f.denominator_;
 		if (d1 != d2) {
@@ -74,6 +75,7 @@ public:
 			n2 = n2 * d1;
 			d1 = d1 * d2;
 			d2 = d1;
+			n1 = n1 + n2;
 		}
 		while (true) {
 			int x = 0;
@@ -85,7 +87,7 @@ public:
 			}
 			if (x == 0) break;
 		}
-		std::string str = std::to_string(n1 + n2);
+		std::string str = std::to_string(n1);
 		std::string str2 = std::to_string(d1);
 		return str + '/' + str2;
 	}
@@ -97,6 +99,7 @@ public:
 			n2 = n2 * d1;
 			d1 = d1 * d2;
 			d2 = d1;
+			n1 = n1 - n2;
 		}
 		while (true) {
 			int x = 0;
@@ -108,7 +111,7 @@ public:
 			}
 			if (x == 0) break;
 		}
-		std::string str = std::to_string(n1 - n2);
+		std::string str = std::to_string(n1);
 		std::string str2 = std::to_string(d1);
 		return str + '/' + str2;
 	}
@@ -157,35 +160,41 @@ public:
 	}
 
 	std::string operator++() {
-		int n1 = ++numerator_, d1 = denominator_;
-		std::string str = std::to_string(n1);
-		std::string str2 = std::to_string(d1);
+		numerator_ = numerator_ + denominator_;
+		std::string str = std::to_string(numerator_);
+		std::string str2 = std::to_string(denominator_);
 		return str + '/' + str2;
 	}
 
 	friend std::string operator++(Fraction& f, int);
 
 	std::string operator--() {
-		int n1 = --numerator_, d1 = denominator_;
-		std::string str = std::to_string(n1);
-		std::string str2 = std::to_string(d1);
+		numerator_ = numerator_ - denominator_;
+		std::string str = std::to_string(numerator_);
+		std::string str2 = std::to_string(denominator_);
 		return str + '/' + str2;
 	}
 
 	friend std::string operator--(Fraction& f, int);
+	
+	std::string printF() {
+		std::string pstr = std::to_string(numerator_);
+		std::string pstr2 = std::to_string(denominator_);
+		return pstr + "/" + pstr2;
+	}
 };
 
 std::string operator++(Fraction& f, int) {
-	int n1 = f.numerator_++, d1 = f.denominator_;
-	std::string str = std::to_string(n1);
-	std::string str2 = std::to_string(d1);
+	std::string str = std::to_string(f.numerator_);
+	std::string str2 = std::to_string(f.denominator_);
+	f.numerator_ = f.numerator_ + f.denominator_;
 	return str + '/' + str2;
 }
 
 std::string operator--(Fraction& f, int) {
-	int n1 = f.numerator_--, d1 = f.denominator_;
-	std::string str = std::to_string(n1);
-	std::string str2 = std::to_string(d1);
+	std::string str = std::to_string(f.numerator_);
+	std::string str2 = std::to_string(f.denominator_);
+	f.numerator_ = f.numerator_ - f.denominator_;
 	return str + '/' + str2;
 }
 
@@ -208,12 +217,17 @@ int main()
 	Fraction f2(n2, d2);
 
 	std::cout << n1 << "/" << d1 << " + " << n2 << "/" << d2 << " = " << (f1 + f2) << std::endl;
-	std::cout << n1 << "/" << d1 << " + " << n2 << "/" << d2 << " = " << (f1 - f2) << std::endl;
-	std::cout << n1 << "/" << d1 << " + " << n2 << "/" << d2 << " = " << (f1 * f2) << std::endl;
-	std::cout << n1 << "/" << d1 << " + " << n2 << "/" << d2 << " = " << (f1 / f2) << std::endl;
+	std::cout << n1 << "/" << d1 << " - " << n2 << "/" << d2 << " = " << (f1 - f2) << std::endl;
+	std::cout << n1 << "/" << d1 << " * " << n2 << "/" << d2 << " = " << (f1 * f2) << std::endl;
+	std::cout << n1 << "/" << d1 << " / " << n2 << "/" << d2 << " = " << (f1 / f2) << std::endl;
 	std::cout << n1 << "/" << d1 << "-" << " = " << -f1 << std::endl;
-	std::cout << n1 << "/" << d1 << "++" << " = " << f1++ << std::endl;
-	std::cout << "++" << n1 << "/" << d1 << " = " << ++f1 << std::endl;
-	std::cout << n1 << "/" << d1 << "--" << " = " << f1-- << std::endl;
-	std::cout << "--" << n1 << "/" << d1 << " = " << --f1 << std::endl;
+	std::cout << f1++ << "++" << " = ";
+	std::cout << f1.printF() << std::endl;
+	std::cout << "++" << ++f1 << " = ";
+	std::cout << f1.printF() << std::endl;
+
+	std::cout << f1-- << "--" << " = ";
+	std::cout << f1.printF() << std::endl;
+	std::cout << "--" << --f1 << " = ";
+	std::cout << f1.printF() << std::endl;
 }
