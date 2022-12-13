@@ -181,15 +181,15 @@ std::ostream& operator<<(std::ostream& l, Fraction f) {
 }
 
 Fraction operator++(Fraction& f, int) {
-	std::cout << f.numerator_ << '/' << f.denominator_ << " = ";
+	Fraction temp = f;
 	f.numerator_ = f.numerator_ + f.denominator_;
-	return f;
+	return temp;
 }
 
 Fraction operator--(Fraction& f, int) {
-	std::cout << f.numerator_ << '/' << f.denominator_ << " = ";
+	Fraction temp = f;
 	f.numerator_ = f.numerator_ - f.denominator_;
-	return f;
+	return temp;
 }
 
 int main()
@@ -215,11 +215,8 @@ int main()
 	std::cout << n1 << "/" << d1 << " * " << n2 << "/" << d2 << " = " << (f1 * f2) << std::endl;
 	std::cout << n1 << "/" << d1 << " / " << n2 << "/" << d2 << " = " << (f1 / f2) << std::endl;
 	std::cout << n1 << "/" << d1 << "-" << " = " << -f1 << std::endl;
-	std::cout << f1++ << std::endl;
-	std::cout << "++" << ++f1 << " = ";
-	std::cout << f1 << std::endl;
-
-	std::cout << f1-- << std::endl;
-	std::cout << "--" << --f1 << " = ";
-	std::cout << f1 << std::endl;
+	std::cout << f1++ << "++" << " = " << f1 << std::endl;
+	std::cout << "++" << ++f1 << " = " << f1 << std::endl;
+	std::cout << f1-- << "--" << " = " << f1 << std::endl;
+	std::cout << "--" << --f1 << " = " << f1 << std::endl;
 }
